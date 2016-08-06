@@ -44,11 +44,12 @@ public class Main {
 
 			JSONArray data = new JSONArray();
 			for (String playerName : recivedLineUp) {
-				JSONArray matched = getMatched(recivedPossiblePlayers, playerName);
+				JSONArray matches = getMatches(recivedPossiblePlayers, playerName);
+				JSONObject match = getMatched(matches, playerName);
 				JSONObject temp = new JSONObject();
 				try {
 					temp.put("name", playerName);
-					temp.put("matches", matched);
+					temp.put("matches", matches);
 				} catch (Exception e) {
 					e.printStackTrace();
 					throw new RuntimeException("abbruch", e);
@@ -61,12 +62,46 @@ public class Main {
 		} , new FreeMarkerEngine());
 	}
 
-	public JSONArray getMatched(Set<JSONObject> recivedPossiblePlayers, String playerName) {
+	public JSONObject getMatched(JSONArray matches, String playerName) {
+		if (matches.length() == 0) {
+			return null;
+		}
+		if (matches.length() == 1) {
+			try {
+				return matches.getJSONObject(0);
+			} catch (JSONException e) {
+				e.printStackTrace();
+				throw new RuntimeException("abbruch", e);
+			}
+		}
+		String[] split = playerName.split(" ");
+		String surname = split[0].replace(".", "");
+		int length = surname.length();
+
+		for (int i = 0; i < matches.length(); i++) {
+			try {
+				JSONObject player = matches.getJSONObject(i);
+				String[] split2 = player.getString("name").split(" ");
+				String surname2 = split2[0].replace(".", "");
+				String shortsurname2 = surname2.substring(0, length);
+				if(surname.equalsIgnoreCase(shortsurname2)){
+					return player;
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+				throw new RuntimeException("abbruch", e);
+			}
+
+		}
+		return null;
+	}
+
+	public JSONArray getMatches(Set<JSONObject> recivedPossiblePlayers, String playerName) {
 		JSONArray matched = new JSONArray();
 		for (JSONObject player : recivedPossiblePlayers) {
 			try {
 				String[] split = playerName.split(" ");
-				String lastname = split[split.length-1];
+				String lastname = split[split.length - 1];
 				if (player.getString("lastname").equalsIgnoreCase(lastname)) {
 					matched.put(player);
 				}
