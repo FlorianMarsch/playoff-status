@@ -48,7 +48,7 @@ public class Main {
 				JSONObject temp = new JSONObject();
 				try {
 					temp.put("name", playerName);
-					temp.put("matched", matched);
+					temp.put("matches", matched);
 				} catch (Exception e) {
 					e.printStackTrace();
 					throw new RuntimeException("abbruch", e);
@@ -65,7 +65,9 @@ public class Main {
 		JSONArray matched = new JSONArray();
 		for (JSONObject player : recivedPossiblePlayers) {
 			try {
-				if (player.getString("lastname").equalsIgnoreCase(playerName)) {
+				String[] split = playerName.split(" ");
+				String lastname = split[split.length-1];
+				if (player.getString("lastname").equalsIgnoreCase(lastname)) {
 					matched.put(player);
 				}
 			} catch (JSONException e) {
