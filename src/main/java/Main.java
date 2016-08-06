@@ -50,6 +50,7 @@ public class Main {
 				try {
 					temp.put("name", playerName);
 					temp.put("matches", matches);
+					temp.put("match", match);
 				} catch (Exception e) {
 					e.printStackTrace();
 					throw new RuntimeException("abbruch", e);
