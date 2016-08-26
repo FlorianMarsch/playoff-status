@@ -163,6 +163,7 @@ public class Main {
 
 				teamList.add(trim);
 			}
+			System.out.println(teamList);
 			return teamList;
 		} catch (Exception e) {
 			e.printStackTrace();
