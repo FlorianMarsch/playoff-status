@@ -20,7 +20,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import de.florianmarsch.nfl.Parser;
+import de.florianmarsch.nfl.PlayOffStatus;
 import spark.ModelAndView;
+import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
 
 public class Main {
@@ -31,140 +34,38 @@ public class Main {
 
 	}
 
+	private String contentCache;
+
 	public void init() {
 		port(Integer.valueOf(System.getenv("PORT")));
 		staticFileLocation("/public");
 
-		get("/api/lineup/:id", (request, response) -> {
+		get("/api/status", (request, response) -> {
 
-			String id = request.params(":id");
-			Set<String> recivedLineUp = reciveLineUp(id);
-			Set<JSONObject> recivedPossiblePlayers = recivePossiblePlayers("1");
+			String content = getContent();
+			PlayOffStatus parse = new Parser().parse(content);
+
 			Map<String, Object> attributes = new HashMap<>();
-
-			JSONArray data = new JSONArray();
-			for (String playerName : recivedLineUp) {
-				JSONArray matches = getMatches(recivedPossiblePlayers, playerName);
-				JSONObject match = getMatched(matches, playerName);
-				JSONObject temp = new JSONObject();
-				try {
-					temp.put("name", playerName);
-					temp.put("matches", matches);
-					temp.put("match", match);
-				} catch (Exception e) {
-					e.printStackTrace();
-					throw new RuntimeException("abbruch", e);
-				}
-				data.put(temp);
-			}
-			attributes.put("data", data.toString());
+			attributes.put("data", parse.toString());
 
 			return new ModelAndView(attributes, "json.ftl");
 		} , new FreeMarkerEngine());
 	}
 
-	public JSONObject getMatched(JSONArray matches, String playerName) {
-		if (matches.length() == 0) {
-			return null;
+	public String getContent() {
+		if (contentCache != null) {
+			return contentCache;
 		}
-		if (matches.length() == 1) {
-			try {
-				return matches.getJSONObject(0);
-			} catch (JSONException e) {
-				e.printStackTrace();
-				throw new RuntimeException("abbruch", e);
-			}
-		}
-		String[] split = playerName.split(" ");
-		String surname = split[0].replace(".", "");
-		int length = surname.length();
 
-		for (int i = 0; i < matches.length(); i++) {
-			try {
-				JSONObject player = matches.getJSONObject(i);
-				String[] split2 = player.getString("name").split(" ");
-				String surname2 = split2[0].replace(".", "");
-				String shortsurname2 = surname2.substring(0, length);
-				if(surname.equalsIgnoreCase(shortsurname2)){
-					return player;
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-				throw new RuntimeException("abbruch", e);
-			}
-
-		}
-		return null;
-	}
-
-	public JSONArray getMatches(Set<JSONObject> recivedPossiblePlayers, String playerName) {
-		JSONArray matched = new JSONArray();
-		for (JSONObject player : recivedPossiblePlayers) {
-			try {
-				String[] split = playerName.split(" ");
-				String lastname = split[split.length - 1];
-				if (player.getString("lastname").equalsIgnoreCase(lastname)) {
-					matched.put(player);
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-				throw new RuntimeException("abbruch", e);
-			}
-		}
-		return matched;
-	}
-
-	public Set<JSONObject> recivePossiblePlayers(String id) {
-		if (id == null | id.trim().isEmpty()) {
-			return new HashSet<>();
-		}
-		Set<JSONObject> playerList = new HashSet<JSONObject>();
 		try {
-			String json = null;
-			String urlString = "http://football-api.florianmarsch.de/v1/api/league/" + id + "/players.json";
+			System.out.println("get Content");
+			String content = null;
+			String urlString = "http://www.playoffstatus.com/nfl/nflpostseasonprob.html";
 			InputStream is = (InputStream) new URL(urlString).getContent();
-			json = IOUtils.toString(is, "UTF-8");
-			JSONArray players = new JSONArray(json);
-			for (int i = 0; i < players.length(); i++) {
-				JSONObject player = players.getJSONObject(i);
-				playerList.add(player);
-			}
-			return playerList;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException("abbruch", e);
-		}
-	}
-
-	public Set<String> reciveLineUp(String id) {
-		if (id == null | id.trim().isEmpty()) {
-			return new HashSet<>();
-		}
-		try {
-			String html = null;
-			String urlString = "http://classic.comunio.de/playerInfo.phtml?pid=" + id;
-			InputStream is = (InputStream) new URL(urlString).getContent();
-			html = IOUtils.toString(is, "UTF-8");
-
-			html = Normalizer.normalize(html, Normalizer.Form.NFD);
-			html = html.replaceAll("[^\\p{ASCII}]", "");
-
-			Document doc = Jsoup.parse(html);
-			Elements lines = doc.select(".name_cont");
-
-			Set<String> teamList = new HashSet<String>();
-			for (int i = 0; i < lines.size(); i++) {
-				Element line = lines.get(i);
-				String tempName = line.html();
-				tempName = StringEscapeUtils.unescapeHtml(tempName);
-				String norm = Normalizer.normalize(tempName, Normalizer.Form.NFD);
-				norm = norm.replaceAll("[^\\p{ASCII}]", "");
-				String trim = norm.trim();
-
-				teamList.add(trim);
-			}
-			System.out.println(teamList);
-			return teamList;
+			content = IOUtils.toString(is, "UTF-8");
+			System.out.println("recive " + content.length() + " bytes");
+			contentCache = content;
+			return content;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException("abbruch", e);
