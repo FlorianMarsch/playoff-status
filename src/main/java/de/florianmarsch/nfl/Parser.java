@@ -62,7 +62,7 @@ public class Parser {
 		tempProbability.setWin(Integer.valueOf(win));
 		tempProbability.setLoose(Integer.valueOf(loose));
 		tempProbability.setDraw(Integer.valueOf(draw));
-		if (superBowlWinner.contains("&lt;")) {
+		if (superBowlWinner.contains("&lt;") || superBowlWinner.contains("x") || superBowlWinner.contains("X") ) {
 			tempProbability.setSuperBowlWinner(0);
 		} else {
 			tempProbability.setSuperBowlWinner(Integer.valueOf(superBowlWinner.replace("%", "").replace("&lt;", "")));
