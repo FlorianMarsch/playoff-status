@@ -79,16 +79,16 @@ public class Parser {
 		switch (team) {
 
 		case "Vikings":
-			return "Florian";
+			return "Frederik";
 
 		case "Patriots":
 			return "Daniel";
 
 		case "Cowboys":
-			return "Daniel";
+			return "Frederik";
 
 		case "Texans":
-			return "Frederik";
+			return "Daniel";
 
 		case "Seahawks":
 			return "Frederik";
@@ -97,49 +97,49 @@ public class Parser {
 			return "Daniel";
 
 		case "Raiders":
-			return "Florian";
+			return "Daniel";
 
 		case "Falcons":
 			return "Frederik";
 
 		case "Bills":
-			return "Frederik";
+			return "Florian";
 
 		case "Chiefs":
-			return "Daniel";
+			return "Florian";
 
 		case "Broncos":
 			return "Florian";
 
 		case "Redskins":
-			return "Daniel";
+			return "Florian";
 
 		case "Packers":
 			return "Daniel";
 
 		case "Titans":
-			return "Florian";
+			return "Daniel";
 
 		case "Ravens":
-			return "Florian";
+			return "Frederik";
 
 		case "Giants":
 			return "Frederik";
 
 		case "Eagles":
-			return "Daniel";
+			return "Florian";
 
 		case "Rams":
 			return "Florian";
 
 		case "Bengals":
-			return "Daniel";
+			return "Frederik";
 
 		case "Buccaneers":
-			return "Florian";
+			return "Daniel";
 
 		case "Lions":
-			return "Frederik";
+			return "Florian";
 
 		case "Cardinals":
 			return "Frederik";
@@ -154,22 +154,22 @@ public class Parser {
 			return "Frederik";
 
 		case "Chargers":
-			return "Daniel";
+			return "";
 
 		case "Jets":
 			return "Florian";
 
 		case "Colts":
-			return "Florian";
+			return "Daniel";
 
 		case "Forty-Niners":
 			return "Frederik";
 
 		case "Panthers":
-			return "Frederik";
+			return "Daniel";
 
 		case "Bears":
-			return "";
+			return "Florian";
 
 		case "Browns":
 			return "";
