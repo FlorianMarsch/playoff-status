@@ -20,7 +20,7 @@ public class Parser {
 		String dateLine = dateLines.iterator().next().html();
 		Elements weekLines = doc.select(".wkinfo");
 		System.out.println("found " + weekLines.size() + " weekLines");
-		String weekLine = weekLines.iterator().next().html().split("&nbsp;")[3];
+		String weekLine = "unknown";//weekLines.iterator().next().html().split("&nbsp;")[3];
 		Elements probabilityLines = doc.select(".mncntnt tr");
 		System.out.println("found " + probabilityLines.size() + " probabilityLines");
 		List<Element> probabilityLineList = removeHeader(probabilityLines);

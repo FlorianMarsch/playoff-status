@@ -5,6 +5,16 @@
 	<groupId>de.florianmarsch</groupId>
 	<version>1.0-SNAPSHOT</version>
 	<artifactId>classic-kader-api</artifactId>
+
+	<repositories>
+		<repository>
+			<id>joelso-mvn-repo</id>
+			<name>joelso github mvn repo</name>
+			<url>https://raw.github.com/joelso/joelso-mvn-repo/master/snapshots/</url>
+		</repository>
+	</repositories>
+
+
 	<dependencies>
 		<dependency>
 			<groupId>com.sparkjava</groupId>
@@ -39,6 +49,17 @@
 			<artifactId>commons-lang</artifactId>
 			<version>2.3</version>
 		</dependency>
+
+
+
+		<!-- Trello sync -->
+
+		<dependency>
+			<groupId>org.trello4j</groupId>
+			<artifactId>trello4j</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>

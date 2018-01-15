@@ -5,8 +5,11 @@ import static spark.SparkBase.staticFileLocation;
 import java.io.InputStream;
 import java.net.URL;
 import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,6 +25,8 @@ import org.jsoup.select.Elements;
 
 import de.florianmarsch.nfl.Parser;
 import de.florianmarsch.nfl.PlayOffStatus;
+import de.florianmarsch.nfl.Probability;
+import de.florianmarsch.trello.Board;
 import spark.ModelAndView;
 import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
@@ -31,7 +36,8 @@ public class Main {
 	public static void main(String[] args) {
 
 		new Main().init();
-
+		
+		
 	}
 
 	private String contentCache;
@@ -50,6 +56,34 @@ public class Main {
 
 			return new ModelAndView(attributes, "json.ftl");
 		} , new FreeMarkerEngine());
+		
+		
+		
+		
+		
+		get("/api/sync", (request, response) -> {
+			String content = getContent();
+			PlayOffStatus parse = new Parser().parse(content);
+			
+			List<String> loosers = new ArrayList<String>();
+			
+			for (Probability line : parse.getProbabilities()) {
+			
+				if(line.getSuperBowlWinner().compareTo(0) == 0) {
+					System.out.println(line.getTeam());
+					loosers.add(line.getTeam());
+				}
+			}
+			
+			new Board().applyOuts(loosers);
+			
+
+			Map<String, Object> attributes = new HashMap<>();
+			attributes.put("data", "synced");
+
+			return new ModelAndView(attributes, "json.ftl");
+		} , new FreeMarkerEngine());
+		
 	}
 
 	public String getContent() {
