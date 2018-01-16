@@ -14,10 +14,10 @@ public class Board {
 	
 	public Board() {
 		trello = new TrelloExtendedImpl(System.getenv("trello.apiKey"), System.getenv("trello.token"));
-		wrapped = trello.getBoard(System.getenv("trello.board"));
-		bucket = trello.getList(System.getenv("trello.outs"));
+		wrapped = getTrello().getBoard(System.getenv("trello.board"));
+		bucket = getTrello().getList(System.getenv("trello.outs"));
 		System.out.println("Sync" + wrapped.getName());
-		teams = trello.getCardsByBoard(wrapped.getId());
+		teams = getTrello().getCardsByBoard(wrapped.getId());
 		
 	}
 	
@@ -34,13 +34,21 @@ public class Board {
 	}
 
 	void moveToBucketList(Card card) {
-		card.setIdList(bucket.getId());
+		card.setIdList(getBucketList().getId());
 		System.out.println(card.getName() +" is out");
-		trello.saveCard(card);
+		getTrello().saveCard(card);
+	}
+
+	TrelloExtendedImpl getTrello() {
+		return trello;
+	}
+
+	org.trello4j.model.List getBucketList() {
+		return bucket;
 	}
 
 	boolean isOnBucketList(Card card) {
-		return card.getIdList().equals(bucket.getId());
+		return card.getIdList().equals(getBucketList().getId());
 	}
 	
 	
