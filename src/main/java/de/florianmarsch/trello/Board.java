@@ -31,14 +31,19 @@ public class Board {
 		teams.stream()
 			.filter(card -> !isOnBucketList(card))
 			.filter(card -> card.getName().equals(looser))
-			.forEach(card -> moveToBucketList(card));
+			.map(card -> moveToBucketList(card))
+			.forEach(card -> addComment(card, aLooser));
 				
 	}
 
-	void moveToBucketList(Card card) {
+	void addComment(Card card, Team aLooser) {
+		System.out.println(aLooser.getStat());
+	}
+
+	Card moveToBucketList(Card card) {
 		card.setIdList(getBucketList().getId());
-		System.out.println(card.getName() +" is out");
 		getTrello().saveCard(card);
+		return card;
 	}
 
 	TrelloExtendedImpl getTrello() {
