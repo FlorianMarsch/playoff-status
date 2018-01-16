@@ -50,7 +50,7 @@ public class Parser {
 		if(!draw.equals("0")) {
 			stat=stat+draw+"-";
 		}
-		stat=stat+loose+"-";
+		stat=stat+loose;
 		tempProbability.setStat(stat);
 		
 		if (superBowlWinner.contains("&lt;") || superBowlWinner.contains("x") || superBowlWinner.contains("X") ) {
