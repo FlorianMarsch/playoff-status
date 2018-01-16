@@ -3,6 +3,7 @@ package de.florianmarsch.trello;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -53,7 +54,13 @@ public class TrelloExtendedImpl extends TrelloImpl {
 	public void addComment(Card card, String aComment) {
 		String id = card.getId();
 		
-		final String url = TrelloURL.CARD_POST_URL+"/"+id+"/actions/comments?text="+aComment+"&key="+apiKey+"&token="+token;
+		String comment;
+		try {
+			comment = URLEncoder.encode(aComment, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(aComment+" can not be parsed");
+		}
+		final String url = TrelloURL.CARD_POST_URL+"/"+id+"/actions/comments?text="+comment+"&key="+apiKey+"&token="+token;
 		
 		System.out.println(url);
 		HashMap<String, String> keyValueMap = new HashMap<String, String>();
@@ -66,6 +73,8 @@ public class TrelloExtendedImpl extends TrelloImpl {
 	
 	InputStream doRequest(String url, String requestMethod, Map<String, String> map) {
 		try {
+			
+			
 			HttpsURLConnection conn = (HttpsURLConnection) new URL(url)
 					.openConnection();
 			conn.setRequestProperty("Accept-Encoding", "gzip, deflate");
