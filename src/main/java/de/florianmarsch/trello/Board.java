@@ -60,6 +60,11 @@ public class Board {
 	
 	
 	public String resolve(String team) {
+		
+		if(team.contains("Buccaneers")) {
+			return "Tampa Bay Buccaneers";
+		}
+		
 		switch (team) {
 
 		case "Saints":
@@ -103,9 +108,6 @@ public class Board {
 
 		case "Bengals":
 			return "Cincinnati Bengals";
-
-		case "BuccaneersBucs":
-			return "Tampa Bay Buccaneers";
 
 		case "Lions":
 			return "Detroit Lions";
