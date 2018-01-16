@@ -63,14 +63,14 @@ public class Main {
 		
 		get("/api/sync", (request, response) -> {
 			String content = getContent();
-			PlayOffStatus parse = new Parser().parse(content);
+			PlayOffStatus playoffstatus = new Parser().parse(content);
 			
 			List<String> loosers = new ArrayList<String>();
 			
-			for (Probability line : parse.getProbabilities()) {
+			for (Probability teamProbabillity : playoffstatus.getProbabilities()) {
 			
-				if(line.getSuperBowlWinner().compareTo(0) == 0) {
-					loosers.add(line.getTeam());
+				if(teamProbabillity.getSuperBowlWinner().compareTo(0) == 0) {
+					loosers.add(teamProbabillity.getTeam());
 				}
 			}
 			
