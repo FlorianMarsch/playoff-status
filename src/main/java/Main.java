@@ -46,28 +46,15 @@ public class Main {
 		port(Integer.valueOf(System.getenv("PORT")));
 		staticFileLocation("/public");
 
-		get("/api/status", (request, response) -> {
-
-			String content = getContent();
-			PlayOffStatus parse = new Parser().parse(content);
-
-			Map<String, Object> attributes = new HashMap<>();
-			attributes.put("data", parse.toString());
-
-			return new ModelAndView(attributes, "json.ftl");
-		} , new FreeMarkerEngine());
-		
-		
-		
 		
 		
 		get("/api/sync", (request, response) -> {
 			String content = getContent();
-			PlayOffStatus playoffstatus = new Parser().parse(content);
+			List<Probability> playoffstatus = new Parser().parse(content);
 			
 			List<String> loosers = new ArrayList<String>();
 			
-			for (Probability teamProbabillity : playoffstatus.getProbabilities()) {
+			for (Probability teamProbabillity : playoffstatus) {
 			
 				if(teamProbabillity.getSuperBowlWinner().compareTo(0) == 0) {
 					loosers.add(teamProbabillity.getTeam());
