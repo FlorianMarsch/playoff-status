@@ -70,7 +70,6 @@ public class Main {
 			for (Probability line : parse.getProbabilities()) {
 			
 				if(line.getSuperBowlWinner().compareTo(0) == 0) {
-					System.out.println(line.getTeam());
 					loosers.add(line.getTeam());
 				}
 			}
