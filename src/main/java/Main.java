@@ -35,11 +35,12 @@ public class Main {
 		
 		
 		get("/api/sync", (request, response) -> {
+			Board trelloBoard = getTrelloBoard();
 			
 			getTeams()
-				.filter(team -> (team.getSuperBowlWinner().compareTo(0) == 0))
+				.filter(team -> team.isOut())
 				.map(team->team.getTeam())
-				.forEach(looser -> getTrelloBoard().applyOuts(looser));	
+				.forEach(looser -> trelloBoard.applyOuts(looser));	
 
 			return "done";
 		} );

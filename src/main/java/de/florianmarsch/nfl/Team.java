@@ -26,6 +26,10 @@ public class Team {
 		this.stat = stat;
 	}
 	
+	public Boolean isOut() {
+		return getSuperBowlWinner().compareTo(0) == 0;
+	}
+	
 	
 	
 }
