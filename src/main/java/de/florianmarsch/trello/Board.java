@@ -21,8 +21,8 @@ public class Board {
 		
 	}
 	
-	public void applyOuts(List<String> loosers) {
-		List<Card> filter = new NameMapper().filter(loosers, teams);
+	public void applyOuts(String looser) {
+		List<Card> filter = new NameMapper().filter(looser, teams);
 		for (Card card : filter) {
 			if(!card.getIdList().equals(out.getId())) {
 				card.setIdList(out.getId());
@@ -30,5 +30,6 @@ public class Board {
 				trello.saveCard(card);
 			}
 		}
+		
 	}
 }

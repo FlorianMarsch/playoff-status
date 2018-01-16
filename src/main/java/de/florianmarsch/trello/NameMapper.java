@@ -8,11 +8,9 @@ import org.trello4j.model.Card;
 public class NameMapper {
 	
 	
-	public List<Card> filter(List<String> outs, List<Card> someCards){
-		List<String> resolvedOuts = new ArrayList<>();
-		for (String team : outs) {
-			resolvedOuts.add(resolve(team));
-		}
+	public List<Card> filter(String out, List<Card> someCards){
+		String resolvedOuts = resolve(out);
+		
 		List<Card> filtered = new ArrayList<>();
 		for (Card card : someCards) {
 			if(resolvedOuts.contains(card.getName())) {
