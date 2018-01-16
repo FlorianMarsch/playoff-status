@@ -23,19 +23,14 @@ public class Parser {
 
 		List<Team> tempProbabilities = new ArrayList<>();
 		for (Element element : probabilityLineList) {
-			String team = element.child(0).child(0).html();
-			if(team.contains("Buccaneers")){
-				team = "Buccaneers";
-			}
 			
+			String name = element.child(0).child(0).html();
 			String win = element.child(2).html();
 			String loose = element.child(3).html();
 			String draw = element.child(4).html();
-			Element child = element.child(5);
+			String superBowlWinner =  element.child(5).child(0).html();
 			
-	
-			String superBowlWinner = child.child(0).html();
-			Team tempProbability = getProbability(team, win, loose, draw, superBowlWinner);
+			Team tempProbability = getProbability(name, win, loose, draw, superBowlWinner);
 			tempProbabilities.add(tempProbability);
 		}
 
