@@ -1,5 +1,7 @@
 package de.florianmarsch.nfl;
 
+import org.trello4j.model.Card;
+
 public class Team {
 
 	private String team;
@@ -29,8 +31,8 @@ public class Team {
 	public Boolean isOut() {
 		return getSuperBowlWinner().compareTo(0) == 0;
 	}
-	public String getOutComment() {
-		return "Die "+ team +" sind mit "+stat+" raus.";
+	public String getOutComment(Card aCard) {
+		return "Die "+ aCard.getName() +" sind mit "+stat+" raus.";
 	}
 	
 	

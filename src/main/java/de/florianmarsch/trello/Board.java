@@ -37,7 +37,7 @@ public class Board {
 	}
 
 	void addComment(Card card, Team aLooser) {
-		getTrello().addComment(card, aLooser.getOutComment());
+		getTrello().addComment(card, aLooser.getOutComment(card));
 	}
 
 	Card moveToBucketList(Card card) {
