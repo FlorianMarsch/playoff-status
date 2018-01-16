@@ -34,7 +34,6 @@ public class Main {
 			
 			getTeams()
 				.filter(team -> team.isOut())
-				.map(team->team.getTeam())
 				.forEach(looser -> trelloBoard.applyOuts(looser));
 
 			return "done";

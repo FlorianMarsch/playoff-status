@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.trello4j.model.Card;
 
+import de.florianmarsch.nfl.Team;
+
 public class Board {
 
 	
@@ -21,9 +23,9 @@ public class Board {
 		
 	}
 	
-	public void applyOuts(String aLooser) {
+	public void applyOuts(Team aLooser) {
 		
-		String looser = resolve(aLooser);
+		String looser = resolve(aLooser.getTeam());
 		
 		
 		teams.stream()
