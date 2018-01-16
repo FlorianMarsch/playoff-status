@@ -4,10 +4,7 @@ import static spark.SparkBase.staticFileLocation;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.IOUtils;
@@ -15,8 +12,6 @@ import org.apache.commons.io.IOUtils;
 import de.florianmarsch.nfl.Parser;
 import de.florianmarsch.nfl.Team;
 import de.florianmarsch.trello.Board;
-import spark.ModelAndView;
-import spark.template.freemarker.FreeMarkerEngine;
 
 public class Main {
 
