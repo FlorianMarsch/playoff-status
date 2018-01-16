@@ -12,7 +12,7 @@ import org.jsoup.select.Elements;
 
 public class Parser {
 
-	public List<Probability> parse(String content) {
+	public List<Team> parse(String content) {
 		System.out.println("parse");
 		Document doc = Jsoup.parse(content);
 		
@@ -21,7 +21,7 @@ public class Parser {
 		System.out.println("found " + probabilityLines.size() + " probabilityLines");
 		List<Element> probabilityLineList = removeHeader(probabilityLines);
 
-		List<Probability> tempProbabilities = new ArrayList<>();
+		List<Team> tempProbabilities = new ArrayList<>();
 		for (Element element : probabilityLineList) {
 			String team = element.child(0).child(0).html();
 			if(team.contains("Buccaneers")){
@@ -35,7 +35,7 @@ public class Parser {
 			
 	
 			String superBowlWinner = child.child(0).html();
-			Probability tempProbability = getProbability(team, win, loose, draw, superBowlWinner);
+			Team tempProbability = getProbability(team, win, loose, draw, superBowlWinner);
 			tempProbabilities.add(tempProbability);
 		}
 
@@ -44,10 +44,10 @@ public class Parser {
 
 	}
 
-	Probability getProbability(String team, String win, String loose, String draw,
+	Team getProbability(String team, String win, String loose, String draw,
 			String superBowlWinner) {
 	
-		Probability tempProbability = new Probability();
+		Team tempProbability = new Team();
 		tempProbability.setTeam(team);
 		
 		

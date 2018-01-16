@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.io.IOUtils;
 
 import de.florianmarsch.nfl.Parser;
-import de.florianmarsch.nfl.Probability;
+import de.florianmarsch.nfl.Team;
 import de.florianmarsch.trello.Board;
 import spark.ModelAndView;
 import spark.template.freemarker.FreeMarkerEngine;
@@ -36,26 +36,27 @@ public class Main {
 		
 		get("/api/sync", (request, response) -> {
 			String content = getContent();
-			List<Probability> playoffstatus = new Parser().parse(content);
+			List<Team> teams = new Parser().parse(content);
 			
 			
 			
 			
-			List<String> loosers = playoffstatus.stream()
+			List<String> loosers = teams.stream()
 					.filter(team -> (team.getSuperBowlWinner().compareTo(0) == 0))
 					.map(team->team.getTeam())
 					.collect(Collectors.toList()) ;
 			
 			
-			new Board().applyOuts(loosers);
+			getTrelloBoard().applyOuts(loosers);
 			
 
-			Map<String, Object> attributes = new HashMap<>();
-			attributes.put("data", "synced");
-
-			return new ModelAndView(attributes, "json.ftl");
-		} , new FreeMarkerEngine());
+			return "done";
+		} );
 		
+	}
+
+	private Board getTrelloBoard() {
+		return new Board();
 	}
 
 	public String getContent() {
@@ -64,12 +65,10 @@ public class Main {
 		}
 
 		try {
-			System.out.println("get Content");
 			String content = null;
 			String urlString = "http://www.playoffstatus.com/nfl/nflpostseasonprob.html";
 			InputStream is = (InputStream) new URL(urlString).getContent();
 			content = IOUtils.toString(is, "UTF-8");
-			System.out.println("recive " + content.length() + " bytes");
 			contentCache = content;
 			return content;
 		} catch (Exception e) {

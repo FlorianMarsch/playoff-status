@@ -1,6 +1,6 @@
 package de.florianmarsch.nfl;
 
-public class Probability {
+public class Team {
 
 	private String team;
 	private String stat;
