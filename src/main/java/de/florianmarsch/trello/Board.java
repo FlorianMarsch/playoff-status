@@ -27,14 +27,20 @@ public class Board {
 		
 		
 		teams.stream()
-			.filter(card -> !card.getIdList().equals(bucket.getId()))
+			.filter(card -> !isOnBucketList(card))
 			.filter(card -> card.getName().equals(looser))
-			.forEach(card -> {
-				card.setIdList(bucket.getId());
-				System.out.println(card.getName() +" is out");
-				trello.saveCard(card);
-			});
+			.forEach(card -> moveToBucketList(card));
 				
+	}
+
+	void moveToBucketList(Card card) {
+		card.setIdList(bucket.getId());
+		System.out.println(card.getName() +" is out");
+		trello.saveCard(card);
+	}
+
+	boolean isOnBucketList(Card card) {
+		return card.getIdList().equals(bucket.getId());
 	}
 	
 	
