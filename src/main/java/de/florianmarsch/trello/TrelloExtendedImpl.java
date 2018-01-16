@@ -40,11 +40,20 @@ public class TrelloExtendedImpl extends TrelloImpl {
 		String id = card.getId();
 		String idList = card.getIdList();
 		
-		
-		
-
-
 		final String url = TrelloURL.CARD_POST_URL+"/"+id+"?idList="+idList+"&key="+apiKey+"&token="+token;
+		
+		System.out.println(url);
+		HashMap<String, String> keyValueMap = new HashMap<String, String>();
+
+		doRequest(url, METHOD_PUT, keyValueMap);
+		
+	}
+	
+
+	public void addComment(Card card, String aComment) {
+		String id = card.getId();
+		
+		final String url = TrelloURL.CARD_POST_URL+"/"+id+"/actions/comments?text="+aComment+"&key="+apiKey+"&token="+token;
 		
 		System.out.println(url);
 		HashMap<String, String> keyValueMap = new HashMap<String, String>();

@@ -29,6 +29,9 @@ public class Team {
 	public Boolean isOut() {
 		return getSuperBowlWinner().compareTo(0) == 0;
 	}
+	public String getOutComment() {
+		return "Die "+ team +" sind mit "+stat+" raus.";
+	}
 	
 	
 	
