@@ -58,7 +58,7 @@ public class TrelloExtendedImpl extends TrelloImpl {
 		System.out.println(url);
 		HashMap<String, String> keyValueMap = new HashMap<String, String>();
 
-		doRequest(url, METHOD_PUT, keyValueMap);
+		doRequest(url, METHOD_POST, keyValueMap);
 		
 	}
 
