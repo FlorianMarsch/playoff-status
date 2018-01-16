@@ -104,7 +104,7 @@ public class Board {
 		case "Bengals":
 			return "Cincinnati Bengals";
 
-		case "Buccaneers":
+		case "BuccaneersBucs":
 			return "Tampa Bay Buccaneers";
 
 		case "Lions":
