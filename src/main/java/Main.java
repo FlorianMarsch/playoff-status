@@ -4,10 +4,10 @@ import static spark.SparkBase.staticFileLocation;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.IOUtils;
 
@@ -38,17 +38,14 @@ public class Main {
 			String content = getContent();
 			List<Probability> playoffstatus = new Parser().parse(content);
 			
-			List<String> loosers = new ArrayList<String>();
 			
 			
 			
+			List<String> loosers = playoffstatus.stream()
+					.filter(team -> (team.getSuperBowlWinner().compareTo(0) == 0))
+					.map(team->team.getTeam())
+					.collect(Collectors.toList()) ;
 			
-			for (Probability teamProbabillity : playoffstatus) {
-			
-				if(teamProbabillity.getSuperBowlWinner().compareTo(0) == 0) {
-					loosers.add(teamProbabillity.getTeam());
-				}
-			}
 			
 			new Board().applyOuts(loosers);
 			
