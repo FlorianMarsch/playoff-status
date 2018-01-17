@@ -1,6 +1,5 @@
 import static spark.Spark.get;
 import static spark.SparkBase.port;
-import static spark.SparkBase.staticFileLocation;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -23,35 +22,35 @@ public class Main {
 	}
 
 	
-	public void init() {
+	void init() {
 		port(Integer.valueOf(System.getenv("PORT")));
-		staticFileLocation("/public");
-
 		
-		
-		get("/api/sync", (request, response) -> {
-			Board trelloBoard = getTrelloBoard();
-			
-			getTeams()
-				.filter(team -> team.isOut())
-				.forEach(looser -> trelloBoard.applyOuts(looser));
-
-			return "done";
-		} );
+		get("/api/sync", (request, response) -> handleSync());
 		
 	}
 
-	private Stream<Team> getTeams() {
+
+	String handleSync() {
+		Board trelloBoard = getTrelloBoard();
+		
+		getTeams()
+			.filter(team -> team.isOut())
+			.forEach(looser -> trelloBoard.applyOuts(looser));
+
+		return "done";
+	}
+
+	Stream<Team> getTeams() {
 		String content = getContent();
 		List<Team> teams = new Parser().parse(content);
 		return teams.stream();
 	}
 
-	private Board getTrelloBoard() {
+	Board getTrelloBoard() {
 		return new Board();
 	}
 
-	public String getContent() {
+	String getContent() {
 		
 
 		try {
